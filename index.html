@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>NFC AI OS 2.0</title>
+  <style>
+    :root {
+      --bg: #0f0f13;
+      --card: #1a1a22;
+      --border: #2a2a35;
+      --accent: #6366f1;
+      --accent2: #a78bfa;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 16px;
+      line-height: 1.5;
+    }
+    .container { max-width: 480px; margin: 0 auto; }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { font-size: 1.4rem; font-weight: 700; }
+    .tag-id {
+      background: var(--accent);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card h2 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent2);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
+    input, textarea, select {
+      width: 100%;
+      background: #121218;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 12px;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+    }
+    button.secondary { background: transparent; border: 1px solid var(--border); }
+    button.danger { background: var(--danger); }
+    button.success { background: var(--success); }
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .note {
+      background: #121218;
+      border-left: 3px solid var(--accent);
+      padding: 12px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    .note-meta { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+    .empty { color: var(--muted); font-style: italic; text-align: center; padding: 20px 0; }
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .tab {
+      flex-shrink: 0;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .tab.active { background: var(--accent); border-color: var(--accent); }
+    .section { display: none; }
+    .section.active { display: block; }
+    .ai-box {
+      background: #121218;
+      border: 1px dashed var(--accent2);
+      border-radius: 12px;
+      padding: 16px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>NFC AI OS 2.0</h1>
+      <div class="tag-id" id="currentTag">—</div>
+    </header>
+
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="identity">Identity</div>
+      <div class="tab" data-tab="memory">Memory</div>
+      <div class="tab" data-tab="commands">Commands</div>
+      <div class="tab" data-tab="ai">AI Brain</div>
+      <div class="tab" data-tab="network">Network</div>
+      <div class="tab" data-tab="system">System</div>
+    </div>
+
+    <!-- IDENTITY -->
+    <div class="section active" id="identity">
+      <div class="card">
+        <h2>01 · Identity</h2>
+        <label>Identificador de la etiqueta</label>
+        <input type="text" id="tagId" readonly />
+        <label>Nombre amigable</label>
+        <input type="text" id="tagName" placeholder="Ej: Casa, Proyecto X, Idea..." />
+        <label>Descripción / propósito</label>
+        <textarea id="tagDesc" placeholder="Para qué sirve esta pegatina..."></textarea>
+        <button onclick="saveIdentity()">Guardar identidad</button>
+      </div>
+    </div>
+
+    <!-- MEMORY -->
+    <div class="section" id="memory">
+      <div class="card">
+        <h2>02 · Memory</h2>
+        <label>Nueva nota</label>
+        <textarea id="newNote" placeholder="Escribe una nota, dato o recordatorio..."></textarea>
+        <button onclick="addNote()">Añadir nota</button>
+        <div id="notesList" style="margin-top:20px;"></div>
+      </div>
+    </div>
+
+    <!-- COMMAND CENTER -->
+    <div class="section" id="commands">
+      <div class="card">
+        <h2>03 · Command Center</h2>
+        <label>Nueva acción rápida</label>
+        <input type="text" id="cmdTitle" placeholder="Título de la acción" />
+        <input type="text" id="cmdUrl" placeholder="URL o texto (opcional)" />
+        <button onclick="addCommand()">Añadir comando</button>
+        <div id="commandsList" style="margin-top:20px;"></div>
+      </div>
+    </div>
+
+    <!-- AI BRAIN -->
+    <div class="section" id="ai">
+      <div class="card">
+        <h2>04 · AI Brain</h2>
+        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:12px;">
+          Genera un bloque de contexto listo para pegar en ChatGPT, Claude o Grok.
+        </p>
+        <button onclick="generateAIContext()">Generar contexto</button>
+        <button class="secondary" onclick="copyAIContext()" style="margin-top:8px;">Copiar al portapapeles</button>
+        <div class="ai-box" id="aiContext" style="margin-top:16px;">Pulsa “Generar contexto”...</div>
+      </div>
+    </div>
+
+    <!-- NETWORK -->
+    <div class="section" id="network">
+      <div class="card">
+        <h2>05 · Network</h2>
+        <label>Conectar con otra etiqueta</label>
+        <input type="text" id="linkTo" placeholder="ID de la otra etiqueta (ej: PROJECT_001)" />
+        <input type="text" id="linkLabel" placeholder="Relación (ej: relacionado con, depende de...)" />
+        <button onclick="addLink()">Crear conexión</button>
+        <div id="linksList" style="margin-top:20px;"></div>
+      </div>
+    </div>
+
+    <!-- SYSTEM -->
+    <div class="section" id="system">
+      <div class="card">
+        <h2>System · Backup</h2>
+        <button onclick="exportData()">Exportar todo (JSON)</button>
+        <button class="secondary" onclick="document.getElementById('importFile').click()" style="margin-top:8px;">Importar backup</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)" />
+        <button class="danger" onclick="resetTag()" style="margin-top:16px;">Borrar datos de esta etiqueta</button>
+      </div>
+      <div class="card">
+        <h2>Todas las etiquetas conocidas</h2>
+        <div id="allTags"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      NFC AI OS 2.0 · Datos locales en este dispositivo
+    </div>
+  </div>
+
+  <script>
+    // ---------- Estado ----------
+    const params = new URLSearchParams(window.location.search);
+    let currentId = params.get('id') || 'HOME';
+    currentId = currentId.toUpperCase().replace(/[^A-Z0-9_]/g, '_');
+
+    const STORAGE_KEY = 'nfc_ai_os_v2';
+
+    function loadDB() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { tags: {} };
+      } catch {
+        return { tags: {} };
+      }
+    }
+
+    function saveDB(db) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+    }
+
+    function getTag() {
+      const db = loadDB();
+      if (!db.tags[currentId]) {
+        db.tags[currentId] = {
+          id: currentId,
+          name: currentId,
+          desc: '',
+          notes: [],
+          commands: [],
+          links: [],
+          created: new Date().toISOString()
+        };
+        saveDB(db);
+      }
+      return db.tags[currentId];
+    }
+
+    function updateTag(mutator) {
+      const db = loadDB();
+      mutator(db.tags[currentId]);
+      saveDB(db);
+      render();
+    }
+
+    // ---------- UI ----------
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    function render() {
+      const tag = getTag();
+      document.getElementById('currentTag').textContent = tag.id;
+      document.getElementById('tagId').value = tag.id;
+      document.getElementById('tagName').value = tag.name || '';
+      document.getElementById('tagDesc').value = tag.desc || '';
+
+      // Notes
+      const notesEl = document.getElementById('notesList');
+      if (tag.notes.length === 0) {
+        notesEl.innerHTML = '<div class="empty">Sin notas todavía</div>';
+      } else {
+        notesEl.innerHTML = tag.notes.slice().reverse().map((n, i) => `
+          <div class="note">
+            ${escapeHtml(n.text)}
+            <div class="note-meta">${new Date(n.ts).toLocaleString()} · 
+              <a href="#" onclick="deleteNote(${tag.notes.length-1-i});return false" style="color:var(--danger)">borrar</a>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Commands
+      const cmdsEl = document.getElementById('commandsList');
+      if (tag.commands.length === 0) {
+        cmdsEl.innerHTML = '<div class="empty">Sin comandos</div>';
+      } else {
+        cmdsEl.innerHTML = tag.commands.map((c, i) => `
+          <div class="note">
+            <strong>${escapeHtml(c.title)}</strong>
+            ${c.url ? `<div style="margin-top:4px;font-size:0.85rem;"><a href="${escapeHtml(c.url)}" target="_blank">${escapeHtml(c.url)}</a></div>` : ''}
+            <div class="note-meta">
+              <a href="#" onclick="deleteCommand(${i});return false" style="color:var(--danger)">borrar</a>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Links
+      const linksEl = document.getElementById('linksList');
+      if (tag.links.length === 0) {
+        linksEl.innerHTML = '<div class="empty">Sin conexiones</div>';
+      } else {
+        linksEl.innerHTML = tag.links.map((l, i) => `
+          <div class="note">
+            → <strong>${escapeHtml(l.to)}</strong> · ${escapeHtml(l.label || 'relacionado')}
+            <div class="note-meta">
+              <a href="?id=${encodeURIComponent(l.to)}">abrir</a> · 
+              <a href="#" onclick="deleteLink(${i});return false" style="color:var(--danger)">borrar</a>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // All tags
+      const db = loadDB();
+      const allEl = document.getElementById('allTags');
+      const ids = Object.keys(db.tags).sort();
+      allEl.innerHTML = ids.map(id => `
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+          <a href="?id=${encodeURIComponent(id)}" style="color:var(--accent2)">${id}</a>
+          <span style="color:var(--muted);font-size:0.8rem">${db.tags[id].name || ''}</span>
+        </div>
+      `).join('') || '<div class="empty">Ninguna etiqueta todavía</div>';
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // ---------- Acciones ----------
+    function saveIdentity() {
+      updateTag(t => {
+        t.name = document.getElementById('tagName').value.trim() || t.id;
+        t.desc = document.getElementById('tagDesc').value.trim();
+      });
+      alert('Identidad guardada');
+    }
+
+    function addNote() {
+      const text = document.getElementById('newNote').value.trim();
+      if (!text) return;
+      updateTag(t => t.notes.push({ text, ts: new Date().toISOString() }));
+      document.getElementById('newNote').value = '';
+    }
+
+    function deleteNote(idx) {
+      updateTag(t => t.notes.splice(idx, 1));
+    }
+
+    function addCommand() {
+      const title = document.getElementById('cmdTitle').value.trim();
+      const url = document.getElementById('cmdUrl').value.trim();
+      if (!title) return;
+      updateTag(t => t.commands.push({ title, url }));
+      document.getElementById('cmdTitle').value = '';
+      document.getElementById('cmdUrl').value = '';
+    }
+
+    function deleteCommand(idx) {
+      updateTag(t => t.commands.splice(idx, 1));
+    }
+
+    function addLink() {
+      const to = document.getElementById('linkTo').value.trim().toUpperCase();
+      const label = document.getElementById('linkLabel').value.trim();
+      if (!to) return;
+      updateTag(t => t.links.push({ to, label }));
+      document.getElementById('linkTo').value = '';
+      document.getElementById('linkLabel').value = '';
+    }
+
+    function deleteLink(idx) {
+      updateTag(t => t.links.splice(idx, 1));
+    }
+
+    function generateAIContext() {
+      const tag = getTag();
+      const db = loadDB();
+      let ctx = `=== CONTEXTO NFC AI OS ===\n`;
+      ctx += `Etiqueta: ${tag.id}\n`;
+      ctx += `Nombre: ${tag.name}\n`;
+      if (tag.desc) ctx += `Propósito: ${tag.desc}\n`;
+      ctx += `\n--- Notas ---\n`;
+      if (tag.notes.length) {
+        tag.notes.forEach(n => ctx += `• ${n.text}\n`);
+      } else {
+        ctx += `(sin notas)\n`;
+      }
+      ctx += `\n--- Comandos ---\n`;
+      tag.commands.forEach(c => ctx += `• ${c.title}${c.url ? ' → ' + c.url : ''}\n`);
+      ctx += `\n--- Conexiones ---\n`;
+      tag.links.forEach(l => ctx += `• ${l.to} (${l.label || 'relacionado'})\n`);
+      ctx += `\n--- Otras etiquetas conocidas ---\n`;
+      Object.keys(db.tags).forEach(id => {
+        if (id !== tag.id) ctx += `• ${id} — ${db.tags[id].name || ''}\n`;
+      });
+      ctx += `\nUsa este contexto para ayudarme con lo que necesite relacionado con esta etiqueta.`;
+      document.getElementById('aiContext').textContent = ctx;
+    }
+
+    function copyAIContext() {
+      const text = document.getElementById('aiContext').textContent;
+      navigator.clipboard.writeText(text).then(() => alert('Copiado al portapapeles'));
+    }
+
+    function exportData() {
+      const db = loadDB();
+      const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `nfc-ai-os-backup-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+    }
+
+    function importData(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const data = JSON.parse(reader.result);
+          if (data.tags) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            alert('Backup importado correctamente');
+            location.reload();
+          } else {
+            alert('Archivo no válido');
+          }
+        } catch {
+          alert('Error al leer el archivo');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function resetTag() {
+      if (!confirm(`¿Borrar todos los datos de ${currentId}?`)) return;
+      const db = loadDB();
+      delete db.tags[currentId];
+      saveDB(db);
+      location.reload();
+    }
+
+    // Inicio
+    render();
+  </script>
+</body>
+</html>
