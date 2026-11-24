@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>NFC AI OS 2.0</title>
+  <title>NFC AI OS</title>
   <style>
     :root {
       --bg: #0f0f13;
@@ -23,117 +23,141 @@
       color: var(--text);
       min-height: 100vh;
       padding: 16px;
-      line-height: 1.5;
+      line-height: 1.45;
     }
     .container { max-width: 480px; margin: 0 auto; }
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
       border-bottom: 1px solid var(--border);
     }
-    h1 { font-size: 1.4rem; font-weight: 700; }
+    h1 { font-size: 1.25rem; font-weight: 700; }
     .tag-id {
       background: var(--accent);
       color: white;
-      padding: 4px 12px;
+      padding: 5px 12px;
       border-radius: 999px;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
     }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    .card h2 {
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--accent2);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
-    input, textarea, select {
-      width: 100%;
-      background: #121218;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px;
-      color: var(--text);
-      font-size: 1rem;
-      margin-bottom: 12px;
-    }
-    textarea { min-height: 100px; resize: vertical; }
-    button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 12px 18px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 8px;
-    }
-    button.secondary { background: transparent; border: 1px solid var(--border); }
-    button.danger { background: var(--danger); }
-    button.success { background: var(--success); }
-    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .note {
-      background: #121218;
-      border-left: 3px solid var(--accent);
-      padding: 12px;
-      border-radius: 0 8px 8px 0;
-      margin-bottom: 8px;
-      font-size: 0.9rem;
-    }
-    .note-meta { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
-    .empty { color: var(--muted); font-style: italic; text-align: center; padding: 20px 0; }
     .tabs {
       display: flex;
-      gap: 4px;
-      margin-bottom: 16px;
+      gap: 6px;
       overflow-x: auto;
-      padding-bottom: 4px;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
     }
+    .tabs::-webkit-scrollbar { display: none; }
     .tab {
       flex-shrink: 0;
       padding: 8px 14px;
       border-radius: 999px;
       background: var(--card);
       border: 1px solid var(--border);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       cursor: pointer;
+      color: var(--muted);
     }
-    .tab.active { background: var(--accent); border-color: var(--accent); }
+    .tab.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
     .section { display: none; }
     .section.active { display: block; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+    .card h2 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--accent2);
+      margin-bottom: 14px;
+    }
+    label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    input, textarea, select {
+      width: 100%;
+      background: #121218;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+    button.secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+    }
+    button.danger { background: var(--danger); margin-top: 10px; }
+    .item {
+      background: #121218;
+      border-left: 3px solid var(--accent);
+      padding: 12px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    .item-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+    .item-meta a { color: var(--danger); text-decoration: none; }
+    .empty {
+      color: var(--muted);
+      font-style: italic;
+      text-align: center;
+      padding: 18px 0;
+      font-size: 0.9rem;
+    }
     .ai-box {
       background: #121218;
       border: 1px dashed var(--accent2);
       border-radius: 12px;
-      padding: 16px;
-      font-family: monospace;
-      font-size: 0.85rem;
+      padding: 14px;
+      font-family: ui-monospace, monospace;
+      font-size: 0.82rem;
       white-space: pre-wrap;
-      max-height: 220px;
+      max-height: 240px;
       overflow-y: auto;
+      margin-top: 12px;
     }
+    .row { display: flex; gap: 8px; }
+    .row input { margin-bottom: 12px; }
     .footer {
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--muted);
-      margin-top: 32px;
-      padding-top: 16px;
+      margin-top: 28px;
+      padding-top: 14px;
       border-top: 1px solid var(--border);
     }
   </style>
@@ -141,120 +165,141 @@
 <body>
   <div class="container">
     <header>
-      <h1>NFC AI OS 2.0</h1>
+      <h1>NFC AI OS</h1>
       <div class="tag-id" id="currentTag">—</div>
     </header>
 
     <div class="tabs" id="tabs">
-      <div class="tab active" data-tab="identity">Identity</div>
-      <div class="tab" data-tab="memory">Memory</div>
-      <div class="tab" data-tab="commands">Commands</div>
-      <div class="tab" data-tab="ai">AI Brain</div>
-      <div class="tab" data-tab="network">Network</div>
-      <div class="tab" data-tab="system">System</div>
+      <div class="tab active" data-tab="ideas">Ideas</div>
+      <div class="tab" data-tab="examenes">Exámenes</div>
+      <div class="tab" data-tab="recordatorios">Recordatorios</div>
+      <div class="tab" data-tab="eventos">Eventos</div>
+      <div class="tab" data-tab="horario">Horario</div>
+      <div class="tab" data-tab="ia">IA</div>
+      <div class="tab" data-tab="info">Info</div>
     </div>
 
-    <!-- IDENTITY -->
-    <div class="section active" id="identity">
+    <!-- IDEAS -->
+    <div class="section active" id="ideas">
       <div class="card">
-        <h2>01 · Identity</h2>
-        <label>Identificador de la etiqueta</label>
-        <input type="text" id="tagId" readonly />
-        <label>Nombre amigable</label>
-        <input type="text" id="tagName" placeholder="Ej: Casa, Proyecto X, Idea..." />
-        <label>Descripción / propósito</label>
-        <textarea id="tagDesc" placeholder="Para qué sirve esta pegatina..."></textarea>
-        <button onclick="saveIdentity()">Guardar identidad</button>
+        <h2>Ideas</h2>
+        <textarea id="newIdea" placeholder="Escribe una idea..."></textarea>
+        <button onclick="addIdea()">Guardar idea</button>
+        <div id="ideasList" style="margin-top:16px;"></div>
       </div>
     </div>
 
-    <!-- MEMORY -->
-    <div class="section" id="memory">
+    <!-- NOTAS DE EXÁMENES -->
+    <div class="section" id="examenes">
       <div class="card">
-        <h2>02 · Memory</h2>
-        <label>Nueva nota</label>
-        <textarea id="newNote" placeholder="Escribe una nota, dato o recordatorio..."></textarea>
-        <button onclick="addNote()">Añadir nota</button>
-        <div id="notesList" style="margin-top:20px;"></div>
+        <h2>Notas de Exámenes</h2>
+        <label>Asignatura</label>
+        <input type="text" id="examSubject" placeholder="Ej: Matemáticas" />
+        <label>Nota</label>
+        <input type="number" id="examGrade" placeholder="Ej: 8.5" step="0.1" min="0" max="10" />
+        <button onclick="addExam()">Guardar nota</button>
+        <div id="examsList" style="margin-top:16px;"></div>
       </div>
     </div>
 
-    <!-- COMMAND CENTER -->
-    <div class="section" id="commands">
+    <!-- RECORDATORIOS -->
+    <div class="section" id="recordatorios">
       <div class="card">
-        <h2>03 · Command Center</h2>
-        <label>Nueva acción rápida</label>
-        <input type="text" id="cmdTitle" placeholder="Título de la acción" />
-        <input type="text" id="cmdUrl" placeholder="URL o texto (opcional)" />
-        <button onclick="addCommand()">Añadir comando</button>
-        <div id="commandsList" style="margin-top:20px;"></div>
+        <h2>Recordatorios</h2>
+        <textarea id="newReminder" placeholder="¿Qué tienes que recordar?"></textarea>
+        <label>Fecha (opcional)</label>
+        <input type="date" id="reminderDate" />
+        <button onclick="addReminder()">Añadir recordatorio</button>
+        <div id="remindersList" style="margin-top:16px;"></div>
       </div>
     </div>
 
-    <!-- AI BRAIN -->
-    <div class="section" id="ai">
+    <!-- EVENTOS -->
+    <div class="section" id="eventos">
       <div class="card">
-        <h2>04 · AI Brain</h2>
-        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:12px;">
-          Genera un bloque de contexto listo para pegar en ChatGPT, Claude o Grok.
+        <h2>Eventos</h2>
+        <label>Título del evento</label>
+        <input type="text" id="eventTitle" placeholder="Ej: Examen de Historia" />
+        <label>Fecha</label>
+        <input type="date" id="eventDate" />
+        <label>Hora (opcional)</label>
+        <input type="time" id="eventTime" />
+        <button onclick="addEvent()">Añadir evento</button>
+        <div id="eventsList" style="margin-top:16px;"></div>
+      </div>
+    </div>
+
+    <!-- HORARIO -->
+    <div class="section" id="horario">
+      <div class="card">
+        <h2>Horario</h2>
+        <label>Día</label>
+        <select id="scheduleDay">
+          <option value="Lunes">Lunes</option>
+          <option value="Martes">Martes</option>
+          <option value="Miércoles">Miércoles</option>
+          <option value="Jueves">Jueves</option>
+          <option value="Viernes">Viernes</option>
+          <option value="Sábado">Sábado</option>
+          <option value="Domingo">Domingo</option>
+        </select>
+        <div class="row">
+          <div style="flex:1">
+            <label>Desde</label>
+            <input type="time" id="scheduleFrom" />
+          </div>
+          <div style="flex:1">
+            <label>Hasta</label>
+            <input type="time" id="scheduleTo" />
+          </div>
+        </div>
+        <label>Actividad</label>
+        <input type="text" id="scheduleActivity" placeholder="Ej: Estudiar Matemáticas" />
+        <button onclick="addSchedule()">Añadir al horario</button>
+        <div id="scheduleList" style="margin-top:16px;"></div>
+      </div>
+    </div>
+
+    <!-- IA -->
+    <div class="section" id="ia">
+      <div class="card">
+        <h2>IA · Generar contexto</h2>
+        <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">
+          Crea un texto con toda la información de esta pegatina para pegarlo en ChatGPT.
         </p>
-        <button onclick="generateAIContext()">Generar contexto</button>
-        <button class="secondary" onclick="copyAIContext()" style="margin-top:8px;">Copiar al portapapeles</button>
-        <div class="ai-box" id="aiContext" style="margin-top:16px;">Pulsa “Generar contexto”...</div>
+        <button onclick="generateContext()">Generar contexto</button>
+        <button class="secondary" onclick="copyContext()">Copiar al portapapeles</button>
+        <div class="ai-box" id="aiContext">Pulsa “Generar contexto”...</div>
       </div>
     </div>
 
-    <!-- NETWORK -->
-    <div class="section" id="network">
+    <!-- INFO -->
+    <div class="section" id="info">
       <div class="card">
-        <h2>05 · Network</h2>
-        <label>Conectar con otra etiqueta</label>
-        <input type="text" id="linkTo" placeholder="ID de la otra etiqueta (ej: PROJECT_001)" />
-        <input type="text" id="linkLabel" placeholder="Relación (ej: relacionado con, depende de...)" />
-        <button onclick="addLink()">Crear conexión</button>
-        <div id="linksList" style="margin-top:20px;"></div>
+        <h2>Info de la pegatina</h2>
+        <label>Identificador</label>
+        <input type="text" id="tagId" readonly />
+        <label>Nombre</label>
+        <input type="text" id="tagName" placeholder="Ej: Exámenes 2º Trimestre" />
+        <label>Descripción</label>
+        <textarea id="tagDesc" placeholder="Para qué usas esta pegatina..."></textarea>
+        <button onclick="saveInfo()">Guardar info</button>
       </div>
     </div>
 
-    <!-- SYSTEM -->
-    <div class="section" id="system">
-      <div class="card">
-        <h2>System · Backup</h2>
-        <button onclick="exportData()">Exportar todo (JSON)</button>
-        <button class="secondary" onclick="document.getElementById('importFile').click()" style="margin-top:8px;">Importar backup</button>
-        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)" />
-        <button class="danger" onclick="resetTag()" style="margin-top:16px;">Borrar datos de esta etiqueta</button>
-      </div>
-      <div class="card">
-        <h2>Todas las etiquetas conocidas</h2>
-        <div id="allTags"></div>
-      </div>
-    </div>
-
-    <div class="footer">
-      NFC AI OS 2.0 · Datos locales en este dispositivo
-    </div>
+    <div class="footer">NFC AI OS · Datos guardados en este dispositivo</div>
   </div>
 
   <script>
-    // ---------- Estado ----------
     const params = new URLSearchParams(window.location.search);
-    let currentId = params.get('id') || 'HOME';
-    currentId = currentId.toUpperCase().replace(/[^A-Z0-9_]/g, '_');
-
-    const STORAGE_KEY = 'nfc_ai_os_v2';
+    let currentId = (params.get('id') || 'HOME').toUpperCase().replace(/[^A-Z0-9_]/g, '_');
+    const STORAGE_KEY = 'nfc_ai_os_v3';
 
     function loadDB() {
-      try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { tags: {} };
-      } catch {
-        return { tags: {} };
-      }
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { tags: {} }; }
+      catch { return { tags: {} }; }
     }
-
-    function saveDB(db) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-    }
+    function saveDB(db) { localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); }
 
     function getTag() {
       const db = loadDB();
@@ -263,24 +308,25 @@
           id: currentId,
           name: currentId,
           desc: '',
-          notes: [],
-          commands: [],
-          links: [],
-          created: new Date().toISOString()
+          ideas: [],
+          exams: [],
+          reminders: [],
+          events: [],
+          schedule: []
         };
         saveDB(db);
       }
       return db.tags[currentId];
     }
 
-    function updateTag(mutator) {
+    function updateTag(fn) {
       const db = loadDB();
-      mutator(db.tags[currentId]);
+      fn(db.tags[currentId]);
       saveDB(db);
       render();
     }
 
-    // ---------- UI ----------
+    // Tabs
     document.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -290,6 +336,12 @@
       });
     });
 
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
     function render() {
       const tag = getTag();
       document.getElementById('currentTag').textContent = tag.id;
@@ -297,188 +349,136 @@
       document.getElementById('tagName').value = tag.name || '';
       document.getElementById('tagDesc').value = tag.desc || '';
 
-      // Notes
-      const notesEl = document.getElementById('notesList');
-      if (tag.notes.length === 0) {
-        notesEl.innerHTML = '<div class="empty">Sin notas todavía</div>';
-      } else {
-        notesEl.innerHTML = tag.notes.slice().reverse().map((n, i) => `
-          <div class="note">
-            ${escapeHtml(n.text)}
-            <div class="note-meta">${new Date(n.ts).toLocaleString()} · 
-              <a href="#" onclick="deleteNote(${tag.notes.length-1-i});return false" style="color:var(--danger)">borrar</a>
-            </div>
-          </div>
-        `).join('');
-      }
+      // Ideas
+      const ideasEl = document.getElementById('ideasList');
+      ideasEl.innerHTML = tag.ideas.length === 0
+        ? '<div class="empty">No hay ideas todavía</div>'
+        : tag.ideas.slice().reverse().map((item, i) => `
+          <div class="item">${escapeHtml(item.text)}
+            <div class="item-meta">${item.date} · <a href="#" onclick="deleteIdea(${tag.ideas.length-1-i});return false">borrar</a></div>
+          </div>`).join('');
 
-      // Commands
-      const cmdsEl = document.getElementById('commandsList');
-      if (tag.commands.length === 0) {
-        cmdsEl.innerHTML = '<div class="empty">Sin comandos</div>';
-      } else {
-        cmdsEl.innerHTML = tag.commands.map((c, i) => `
-          <div class="note">
-            <strong>${escapeHtml(c.title)}</strong>
-            ${c.url ? `<div style="margin-top:4px;font-size:0.85rem;"><a href="${escapeHtml(c.url)}" target="_blank">${escapeHtml(c.url)}</a></div>` : ''}
-            <div class="note-meta">
-              <a href="#" onclick="deleteCommand(${i});return false" style="color:var(--danger)">borrar</a>
-            </div>
-          </div>
-        `).join('');
-      }
+      // Exámenes
+      const examsEl = document.getElementById('examsList');
+      examsEl.innerHTML = tag.exams.length === 0
+        ? '<div class="empty">No hay notas todavía</div>'
+        : tag.exams.slice().reverse().map((item, i) => `
+          <div class="item"><strong>${escapeHtml(item.subject)}</strong>: ${item.grade}
+            <div class="item-meta"><a href="#" onclick="deleteExam(${tag.exams.length-1-i});return false">borrar</a></div>
+          </div>`).join('');
 
-      // Links
-      const linksEl = document.getElementById('linksList');
-      if (tag.links.length === 0) {
-        linksEl.innerHTML = '<div class="empty">Sin conexiones</div>';
-      } else {
-        linksEl.innerHTML = tag.links.map((l, i) => `
-          <div class="note">
-            → <strong>${escapeHtml(l.to)}</strong> · ${escapeHtml(l.label || 'relacionado')}
-            <div class="note-meta">
-              <a href="?id=${encodeURIComponent(l.to)}">abrir</a> · 
-              <a href="#" onclick="deleteLink(${i});return false" style="color:var(--danger)">borrar</a>
-            </div>
-          </div>
-        `).join('');
-      }
+      // Recordatorios
+      const remEl = document.getElementById('remindersList');
+      remEl.innerHTML = tag.reminders.length === 0
+        ? '<div class="empty">No hay recordatorios</div>'
+        : tag.reminders.slice().reverse().map((item, i) => `
+          <div class="item">${escapeHtml(item.text)}
+            <div class="item-meta">${item.date || 'Sin fecha'} · <a href="#" onclick="deleteReminder(${tag.reminders.length-1-i});return false">borrar</a></div>
+          </div>`).join('');
 
-      // All tags
-      const db = loadDB();
-      const allEl = document.getElementById('allTags');
-      const ids = Object.keys(db.tags).sort();
-      allEl.innerHTML = ids.map(id => `
-        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
-          <a href="?id=${encodeURIComponent(id)}" style="color:var(--accent2)">${id}</a>
-          <span style="color:var(--muted);font-size:0.8rem">${db.tags[id].name || ''}</span>
-        </div>
-      `).join('') || '<div class="empty">Ninguna etiqueta todavía</div>';
+      // Eventos
+      const evEl = document.getElementById('eventsList');
+      evEl.innerHTML = tag.events.length === 0
+        ? '<div class="empty">No hay eventos</div>'
+        : tag.events.slice().reverse().map((item, i) => `
+          <div class="item"><strong>${escapeHtml(item.title)}</strong>
+            <div class="item-meta">${item.date}${item.time ? ' · ' + item.time : ''} · <a href="#" onclick="deleteEvent(${tag.events.length-1-i});return false">borrar</a></div>
+          </div>`).join('');
+
+      // Horario
+      const schEl = document.getElementById('scheduleList');
+      schEl.innerHTML = tag.schedule.length === 0
+        ? '<div class="empty">Horario vacío</div>'
+        : tag.schedule.map((item, i) => `
+          <div class="item"><strong>${item.day}</strong> ${item.from} - ${item.to}<br>${escapeHtml(item.activity)}
+            <div class="item-meta"><a href="#" onclick="deleteSchedule(${i});return false">borrar</a></div>
+          </div>`).join('');
     }
 
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
+    // Actions
+    function addIdea() {
+      const text = document.getElementById('newIdea').value.trim();
+      if (!text) return;
+      updateTag(t => t.ideas.push({ text, date: new Date().toLocaleString('es-ES') }));
+      document.getElementById('newIdea').value = '';
     }
+    function deleteIdea(i) { updateTag(t => t.ideas.splice(i, 1)); }
 
-    // ---------- Acciones ----------
-    function saveIdentity() {
+    function addExam() {
+      const subject = document.getElementById('examSubject').value.trim();
+      const grade = document.getElementById('examGrade').value;
+      if (!subject || grade === '') return alert('Rellena asignatura y nota');
+      updateTag(t => t.exams.push({ subject, grade }));
+      document.getElementById('examSubject').value = '';
+      document.getElementById('examGrade').value = '';
+    }
+    function deleteExam(i) { updateTag(t => t.exams.splice(i, 1)); }
+
+    function addReminder() {
+      const text = document.getElementById('newReminder').value.trim();
+      if (!text) return;
+      const date = document.getElementById('reminderDate').value;
+      updateTag(t => t.reminders.push({ text, date }));
+      document.getElementById('newReminder').value = '';
+      document.getElementById('reminderDate').value = '';
+    }
+    function deleteReminder(i) { updateTag(t => t.reminders.splice(i, 1)); }
+
+    function addEvent() {
+      const title = document.getElementById('eventTitle').value.trim();
+      const date = document.getElementById('eventDate').value;
+      const time = document.getElementById('eventTime').value;
+      if (!title || !date) return alert('Pon título y fecha');
+      updateTag(t => t.events.push({ title, date, time }));
+      document.getElementById('eventTitle').value = '';
+      document.getElementById('eventDate').value = '';
+      document.getElementById('eventTime').value = '';
+    }
+    function deleteEvent(i) { updateTag(t => t.events.splice(i, 1)); }
+
+    function addSchedule() {
+      const day = document.getElementById('scheduleDay').value;
+      const from = document.getElementById('scheduleFrom').value;
+      const to = document.getElementById('scheduleTo').value;
+      const activity = document.getElementById('scheduleActivity').value.trim();
+      if (!from || !to || !activity) return alert('Rellena todos los campos');
+      updateTag(t => t.schedule.push({ day, from, to, activity }));
+      document.getElementById('scheduleActivity').value = '';
+    }
+    function deleteSchedule(i) { updateTag(t => t.schedule.splice(i, 1)); }
+
+    function saveInfo() {
       updateTag(t => {
         t.name = document.getElementById('tagName').value.trim() || t.id;
         t.desc = document.getElementById('tagDesc').value.trim();
       });
-      alert('Identidad guardada');
+      alert('Info guardada');
     }
 
-    function addNote() {
-      const text = document.getElementById('newNote').value.trim();
-      if (!text) return;
-      updateTag(t => t.notes.push({ text, ts: new Date().toISOString() }));
-      document.getElementById('newNote').value = '';
-    }
-
-    function deleteNote(idx) {
-      updateTag(t => t.notes.splice(idx, 1));
-    }
-
-    function addCommand() {
-      const title = document.getElementById('cmdTitle').value.trim();
-      const url = document.getElementById('cmdUrl').value.trim();
-      if (!title) return;
-      updateTag(t => t.commands.push({ title, url }));
-      document.getElementById('cmdTitle').value = '';
-      document.getElementById('cmdUrl').value = '';
-    }
-
-    function deleteCommand(idx) {
-      updateTag(t => t.commands.splice(idx, 1));
-    }
-
-    function addLink() {
-      const to = document.getElementById('linkTo').value.trim().toUpperCase();
-      const label = document.getElementById('linkLabel').value.trim();
-      if (!to) return;
-      updateTag(t => t.links.push({ to, label }));
-      document.getElementById('linkTo').value = '';
-      document.getElementById('linkLabel').value = '';
-    }
-
-    function deleteLink(idx) {
-      updateTag(t => t.links.splice(idx, 1));
-    }
-
-    function generateAIContext() {
+    function generateContext() {
       const tag = getTag();
-      const db = loadDB();
-      let ctx = `=== CONTEXTO NFC AI OS ===\n`;
-      ctx += `Etiqueta: ${tag.id}\n`;
-      ctx += `Nombre: ${tag.name}\n`;
-      if (tag.desc) ctx += `Propósito: ${tag.desc}\n`;
-      ctx += `\n--- Notas ---\n`;
-      if (tag.notes.length) {
-        tag.notes.forEach(n => ctx += `• ${n.text}\n`);
-      } else {
-        ctx += `(sin notas)\n`;
-      }
-      ctx += `\n--- Comandos ---\n`;
-      tag.commands.forEach(c => ctx += `• ${c.title}${c.url ? ' → ' + c.url : ''}\n`);
-      ctx += `\n--- Conexiones ---\n`;
-      tag.links.forEach(l => ctx += `• ${l.to} (${l.label || 'relacionado'})\n`);
-      ctx += `\n--- Otras etiquetas conocidas ---\n`;
-      Object.keys(db.tags).forEach(id => {
-        if (id !== tag.id) ctx += `• ${id} — ${db.tags[id].name || ''}\n`;
-      });
-      ctx += `\nUsa este contexto para ayudarme con lo que necesite relacionado con esta etiqueta.`;
+      let ctx = `=== CONTEXTO DE LA PEGATINA: ${tag.name || tag.id} ===\n`;
+      if (tag.desc) ctx += `Descripción: ${tag.desc}\n`;
+      ctx += `\n--- IDEAS ---\n`;
+      ctx += tag.ideas.length ? tag.ideas.map(i => `• ${i.text}`).join('\n') : '(ninguna)';
+      ctx += `\n\n--- NOTAS DE EXÁMENES ---\n`;
+      ctx += tag.exams.length ? tag.exams.map(e => `• ${e.subject}: ${e.grade}`).join('\n') : '(ninguna)';
+      ctx += `\n\n--- RECORDATORIOS ---\n`;
+      ctx += tag.reminders.length ? tag.reminders.map(r => `• ${r.text}${r.date ? ' ('+r.date+')' : ''}`).join('\n') : '(ninguno)';
+      ctx += `\n\n--- EVENTOS ---\n`;
+      ctx += tag.events.length ? tag.events.map(e => `• ${e.title} — ${e.date}${e.time ? ' '+e.time : ''}`).join('\n') : '(ninguno)';
+      ctx += `\n\n--- HORARIO ---\n`;
+      ctx += tag.schedule.length ? tag.schedule.map(s => `• ${s.day} ${s.from}-${s.to}: ${s.activity}`).join('\n') : '(vacío)';
+      ctx += `\n\nUsa esta información para ayudarme.`;
       document.getElementById('aiContext').textContent = ctx;
     }
 
-    function copyAIContext() {
+    function copyContext() {
       const text = document.getElementById('aiContext').textContent;
-      navigator.clipboard.writeText(text).then(() => alert('Copiado al portapapeles'));
+      if (text.includes('Pulsa')) return alert('Primero genera el contexto');
+      navigator.clipboard.writeText(text).then(() => alert('Copiado')).catch(() => alert('Copia manualmente'));
     }
 
-    function exportData() {
-      const db = loadDB();
-      const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `nfc-ai-os-backup-${new Date().toISOString().slice(0,10)}.json`;
-      a.click();
-    }
-
-    function importData(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const data = JSON.parse(reader.result);
-          if (data.tags) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            alert('Backup importado correctamente');
-            location.reload();
-          } else {
-            alert('Archivo no válido');
-          }
-        } catch {
-          alert('Error al leer el archivo');
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function resetTag() {
-      if (!confirm(`¿Borrar todos los datos de ${currentId}?`)) return;
-      const db = loadDB();
-      delete db.tags[currentId];
-      saveDB(db);
-      location.reload();
-    }
-
-    // Inicio
     render();
   </script>
 </body>
